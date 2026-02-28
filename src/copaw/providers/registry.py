@@ -30,7 +30,7 @@ DASHSCOPE_MODELS: List[ModelInfo] = [
     ModelInfo(id="deepseek-v3.2", name="DeepSeek-V3.2"),
 ]
 
-CODINGPLAN_MODELS: List[ModelInfo] = [
+ALIYUN_CODINGPLAN_MODELS: List[ModelInfo] = [
     ModelInfo(id="qwen3.5-plus", name="Qwen3.5 Plus"),
 ]
 
@@ -50,12 +50,12 @@ PROVIDER_DASHSCOPE = ProviderDefinition(
     models=DASHSCOPE_MODELS,
 )
 
-PROVIDER_CODINGPLAN = ProviderDefinition(
-    id="codingplan",
-    name="CodingPlan",
+PROVIDER_ALIYUN_CODINGPLAN = ProviderDefinition(
+    id="aliyun-codingplan",
+    name="AliyunCodingPlan",
     default_base_url="https://coding.dashscope.aliyuncs.com/v1",
     api_key_prefix="sk-sp",
-    models=CODINGPLAN_MODELS,
+    models=ALIYUN_CODINGPLAN_MODELS,
 )
 
 PROVIDER_LLAMACPP = ProviderDefinition(
@@ -85,13 +85,20 @@ PROVIDER_OLLAMA = ProviderDefinition(
 )
 
 _BUILTIN_IDS: frozenset[str] = frozenset(
-    ["modelscope", "dashscope", "codingplan", "ollama", "llamacpp", "mlx"],
+    [
+        "modelscope",
+        "dashscope",
+        "aliyun-codingplan",
+        "ollama",
+        "llamacpp",
+        "mlx",
+    ],
 )
 
 PROVIDERS: dict[str, ProviderDefinition] = {
     PROVIDER_MODELSCOPE.id: PROVIDER_MODELSCOPE,
     PROVIDER_DASHSCOPE.id: PROVIDER_DASHSCOPE,
-    PROVIDER_CODINGPLAN.id: PROVIDER_CODINGPLAN,
+    PROVIDER_ALIYUN_CODINGPLAN.id: PROVIDER_ALIYUN_CODINGPLAN,
     PROVIDER_OLLAMA.id: PROVIDER_OLLAMA,
     PROVIDER_LLAMACPP.id: PROVIDER_LLAMACPP,
     PROVIDER_MLX.id: PROVIDER_MLX,
