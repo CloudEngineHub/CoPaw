@@ -179,8 +179,12 @@ class ConversationRelayHandler:
         )
 
     async def _process_and_stream(self, request: Any) -> None:
-        """Run the request through the agent, streaming tokens to Twilio."""
-        sent_any = False
+        """Run the request through the agent, streaming tokens to Twilio.
+
+        Each completed message is sent immediately followed by a
+        ``last=true`` marker so Twilio can start TTS playback without
+        waiting for the entire agent event stream to finish.
+        """
         try:
             async for event in self._process(request):
                 if self._closed:
@@ -192,7 +196,7 @@ class ConversationRelayHandler:
                     text = self._extract_text_from_event(event)
                     if text:
                         await self._send_token(text, last=False)
-                        sent_any = True
+                        await self._send_token("", last=True)
                 elif obj == "response":
                     err = getattr(event, "error", None)
                     if err:
@@ -206,22 +210,15 @@ class ConversationRelayHandler:
                             _ERROR_MSG,
                             last=False,
                         )
-                        sent_any = True
+                        await self._send_token("", last=True)
         except Exception:
             logger.exception(
                 "Error processing voice request: call_sid=%s",
                 self.call_sid,
             )
             if not self._closed:
-                await self._send_token(
-                    _ERROR_MSG,
-                    last=False,
-                )
-                sent_any = True
-
-        # Send final marker so Twilio knows TTS playback can start.
-        if sent_any and not self._closed:
-            await self._send_token("", last=True)
+                await self._send_token(_ERROR_MSG, last=False)
+                await self._send_token("", last=True)
 
     @staticmethod
     def _extract_text_from_event(event: Any) -> str:
