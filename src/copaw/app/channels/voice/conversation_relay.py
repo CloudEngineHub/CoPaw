@@ -148,15 +148,16 @@ class ConversationRelayHandler:
         # We log the interruption but don't truncate context.
         # Future: truncate assistant message to what was actually spoken.
 
-    async def _handle_dtmf(self, msg: dict) -> None:
+    async def _handle_dtmf(
+        self,
+        msg: dict,  # pylint: disable=unused-argument
+    ) -> None:
         """Process a ``dtmf`` message (keypad press)."""
-        digit = msg.get("digit", "")
+        # Digit not logged -- may contain PINs / account numbers.
         logger.info(
-            "DTMF received: call_sid=%s digit=%s",
+            "DTMF received: call_sid=%s",
             self.call_sid,
-            digit,
         )
-        # DTMF handling deferred to future version.
 
     def _build_agent_request(self, text: str) -> Any:
         """Build an AgentRequest from user speech text."""
