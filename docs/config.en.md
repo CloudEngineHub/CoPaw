@@ -52,7 +52,8 @@ specific file names:
 | `COPAW_CHATS_FILE`                 | `chats.json`    | Chats file name (relative to working dir)                                           |
 | `COPAW_LOG_LEVEL`                  | `info`          | Log level for the app (`debug`, `info`, `warning`, `error`, `critical`)             |
 | `COPAW_MEMORY_COMPACT_THRESHOLD`   | `100000`        | Character threshold to trigger memory compaction                                    |
-| `COPAW_MEMORY_COMPACT_KEEP_RECENT` | `5`             | Number of recent messages kept after compaction                                     |
+| `COPAW_MEMORY_COMPACT_KEEP_RECENT` | `3`             | Number of recent messages kept after compaction                                     |
+| `COPAW_MEMORY_COMPACT_RATIO`       | `0.7`           | Threshold ratio for triggering compaction (relative to context window)              |
 | `COPAW_CONSOLE_STATIC_DIR`         | _(auto-detect)_ | Path to the console front-end static files                                          |
 
 Example — use a different working dir for this shell:
@@ -149,10 +150,11 @@ Each channel has a common base and channel-specific fields.
 
 **Common fields (all channels):**
 
-| Field        | Type   | Default | Description                           |
-| ------------ | ------ | ------- | ------------------------------------- |
-| `enabled`    | bool   | `false` | Whether the channel is active         |
-| `bot_prefix` | string | `""`    | Optional command prefix (e.g. `/paw`) |
+| Field                  | Type   | Default | Description                                                    |
+| ---------------------- | ------ | ------- | -------------------------------------------------------------- |
+| `enabled`              | bool   | `false` | Whether the channel is active                                  |
+| `bot_prefix`           | string | `""`    | Optional command prefix (e.g. `/paw`)                          |
+| `filter_tool_messages` | bool   | `false` | Filter tool call/output messages from being sent (default off) |
 
 **`channels.imessage`** — macOS iMessage
 
